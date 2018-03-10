@@ -15,27 +15,51 @@ exports.isPrefixed = function(str, prefix){
     } else {
         return {
             isPrefixed: false,
-            msg: ""
+            msg: str
         };
     }
 }
 
-
+/**
+ * @param {string} msg
+ * Checks to see if the string is all digits.
+ */
+exports.isAllDigits = function(msg){
+    if(msg.match(/^[0-9]+$/) != null){
+        return true;
+    }
+    return false;
+}
 
 /**
  * @param {array} commands
  * @param {string} msg
+ * Returns true if this is a registered command.
  */
-
 exports.isCommand = function(commands, msg){
     let command = msg.split(" ");
     for(let i = 0; i < commands.length; i++){
         if(commands[i].name === command[1]){
-            return commands[i].action(msg);
+            return {command: commands[i], isCommand: true};
         }
     }
-    return false;
+    return {command: {}, isCommand: false};
 }
+
+/**
+ * 
+ * @param {object} command 
+ * @param {string} msg 
+ * @param {string} author 
+ * @param {string} channel 
+ * @param {client} client 
+ * Executes the given command.
+ */
+exports.executeCommand = function(command, msg, author, channel, client){
+    console.log(command);
+    return command.action(msg, author, channel, client);
+}
+
 
 
 /**
